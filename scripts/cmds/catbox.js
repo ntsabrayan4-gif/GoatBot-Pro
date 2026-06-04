@@ -6,67 +6,99 @@ const FormData = require("form-data");
 module.exports = {
   config: {
     name: "catbox",
-    version: "2.1",
+    version: "1.0.0",
     author: "EryXenX",
     role: 0,
-    shortDescription: "Upload media via API",
+    shortDescription: "Upload media to Catbox",
+    longDescription: "Reply to an image, video, audio, or file to upload it to Catbox",
     category: "media",
+    guide: "{pn} (reply to a file)",
     cooldowns: 5
   },
 
   onStart: async function ({ api, event }) {
-    const { threadID, messageReply, type, messageID } = event;
+    const { threadID, messageID, type, messageReply } = event;
 
-    if (type !== "message_reply" || !messageReply.attachments.length) {
-      return api.sendMessage("❐ Reply to image/video/audio file", threadID, messageID);
+    if (
+      type !== "message_reply" ||
+      !messageReply ||
+      !messageReply.attachments ||
+      messageReply.attachments.length === 0
+    ) {
+      return api.sendMessage(
+        "Reply to an image, video, audio, or file.",
+        threadID,
+        messageID
+      );
     }
 
-    const file = messageReply.attachments[0];
-    const filePath = path.join(__dirname, "cache_" + Date.now());
+    const attachment = messageReply.attachments[0];
+    const ext = attachment.filename
+      ? path.extname(attachment.filename)
+      : ".tmp";
+
+    const cacheDir = path.join(__dirname, "cache");
+
+    if (!fs.existsSync(cacheDir)) {
+      fs.mkdirSync(cacheDir, { recursive: true });
+    }
+
+    const filePath = path.join(
+      cacheDir,
+      `catbox_${Date.now()}${ext}`
+    );
 
     try {
-      const download = await axios({
-        url: file.url,
+      const file = await axios({
+        url: attachment.url,
         method: "GET",
         responseType: "stream"
       });
 
       const writer = fs.createWriteStream(filePath);
-      download.data.pipe(writer);
+      file.data.pipe(writer);
 
-      writer.on("finish", async () => {
-        try {
-          const form = new FormData();
-          form.append("file", fs.createReadStream(filePath));
-
-          const upload = await axios.post(
-            "https://catbox-api-d07o.onrender.com/upload",
-            form,
-            {
-              headers: form.getHeaders()
-            }
-          );
-
-          fs.unlinkSync(filePath);
-
-          if (upload.data && upload.data.url) {
-            return api.sendMessage(
-              upload.data.url,
-              threadID,
-              messageID
-            );
-          } else {
-            return api.sendMessage("❌ Upload failed", threadID, messageID);
-          }
-
-        } catch (err) {
-          fs.existsSync(filePath) && fs.unlinkSync(filePath);
-          return api.sendMessage("❌ API error", threadID, messageID);
-        }
+      await new Promise((resolve, reject) => {
+        writer.on("finish", resolve);
+        writer.on("error", reject);
       });
 
-    } catch (e) {
-      return api.sendMessage("❌ Download failed", threadID, messageID);
+      const form = new FormData();
+      form.append("reqtype", "fileupload");
+      form.append("fileToUpload", fs.createReadStream(filePath));
+
+      const upload = await axios.post(
+        "https://catbox.moe/user/api.php",
+        form,
+        {
+          headers: form.getHeaders(),
+          maxBodyLength: Infinity,
+          maxContentLength: Infinity
+        }
+      );
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+
+      return api.sendMessage(
+        upload.data.trim(),
+        threadID,
+        messageID
+      );
+
+    } catch (err) {
+      console.error("Catbox Error:", err);
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+
+      return api.sendMessage(
+        "Upload failed.",
+        threadID,
+        messageID
+      );
     }
   }
 };
