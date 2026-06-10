@@ -10,7 +10,7 @@
     "notes": "Automatically retrieves new cookies every x minutes. Recommended: 1440 (1 day)."
   },
   "antiInbox": false,
-  "language": "fr",
+  "language": "en",
   "notesLanguage": "change language using ISO 639-1 code",
   "nickNameBot": "𝗕𝗥𝗬𝗔𝗡💀𝗔𝗜𝗭𝗘𝗡",
   "prefix": "/",
