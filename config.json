@@ -5,18 +5,25 @@
     "2FASecret": "",
     "i_user": "",
     "proxy": null,
-    "userAgent": "Mozilla/5.0 (Linux; Android 12; M2102J20SG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Mobile Safari/537.36",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
     "intervalGetNewCookie": 1440,
     "notes": "Automatically retrieves new cookies every x minutes. Recommended: 1440 (1 day)."
   },
   "antiInbox": false,
   "language": "en",
   "notesLanguage": "change language using ISO 639-1 code",
-  "nickNameBot": "𝐒𝐚𝐦𝐦𝐲",
-  "prefix": ".",
+  "nickNameBot": "XUDI OKAY?",
+  "prefix": "/",
+  "enableTypingIndicator": true,
+  "typingDuration": 2000,
+  "notesTypingIndicator": "true = show 'is typing...' before every reply (more human-like, adds visible delay) | false = reply instantly, no typing shown",
   "noPrefix": {
-    "enable": false,
+    "enable": true,
     "notes": "true = only bot admins can use commands without prefix | false = everyone must use prefix"
+  },
+  "e2ee": {
+    "enable": false,
+    "notes": "true = connect E2EE messaging layer on startup | false = skip E2EE entirely, MQTT only"
   },
   "adminOnly": {
     "enable": false,
@@ -24,8 +31,6 @@
   },
   "adminBot": [
     "61581453916589",
-    " ",
-    " "
   ],
   "reactUnsend": {
     "enable": true,
@@ -39,7 +44,7 @@
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [
-      "61581453916589",
+      "",
       ""
     ],
     "notes": "If enabled, only IDs in whiteListIds can use the bot."
@@ -50,7 +55,7 @@
     "notes": "If enabled, only threads in whiteListThreadIds can use the bot."
   },
   "database": {
-    "type": "mongodb",
+    "type": "sqlite",
     "uriMongodb": "mongodb+srv://eryxenxdb:eryxenxdbgoatv2@cluster0.523a3n0.mongodb.net/?appName=Cluster0",
     "autoSyncWhenStart": false,
     "autoRefreshThreadInfoFirstTime": true,
@@ -73,7 +78,7 @@
   "dashBoard": {
     "enable": true,
     "expireVerifyCode": 300000,
-    "port": 3001
+    "port": 12001
   },
   "serverUptime": {
     "enable": false,
@@ -147,20 +152,15 @@
     "presence": false
   },
   "optionsFca": {
-  "forceLogin": false,
-  "listenEvents": true,
-  "updatePresence": false,
-  "listenTyping": false,
-  "logLevel": "error",
-  "selfListen": false,
-  "selfListenEvent": true,
-  "autoMarkDelivery": false,
-  "autoReconnect": true
-  }
-"autoRefreshFbstate": true,
-"restartListenMqtt": {
-  "enable": true,
-  "logNoti": false
-}
+    "forceLogin": true,
+    "listenEvents": true,
+    "updatePresence": true,
+    "listenTyping": true,
+    "logLevel": "error",
+    "selfListen": false,
+    "selfListenEvent": true,
+    "autoMarkDelivery": false,
+    "autoReconnect": true,
     "notes": "Docs: https://github.com/ntkhang03/fb-chat-api/blob/master/DOCS.md#apisetoptionsoptions"
-  },
+  }
+}
