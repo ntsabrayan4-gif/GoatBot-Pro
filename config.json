@@ -147,15 +147,17 @@
     "presence": false
   },
   "optionsFca": {
-    "forceLogin": true,
-    "listenEvents": true,
-    "updatePresence": true,
-    "listenTyping": true,
-    "logLevel": "error",
-    "selfListen": false,
-    "selfListenEvent": true,
-    "autoMarkDelivery": false,
-    "autoReconnect": true,
-    "notes": "Docs: https://github.com/ntkhang03/fb-chat-api/blob/master/DOCS.md#apisetoptionsoptions"
-  }
+  "listenEvents": true,
+  "autoMarkDelivery": false,
+  "autoMarkRead": false,
+  "selfListen": false,
+  "online": false,
+  "logLevel": "silent"
+},
+"autoRefreshFbstate": true,
+"restartListenMqtt": {
+  "enable": true,
+  "logNoti": false
 }
+    "notes": "Docs: https://github.com/ntkhang03/fb-chat-api/blob/master/DOCS.md#apisetoptionsoptions"
+  },
