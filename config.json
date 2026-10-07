@@ -147,13 +147,16 @@
     "presence": false
   },
   "optionsFca": {
+  "forceLogin": false,
   "listenEvents": true,
-  "autoMarkDelivery": false,
-  "autoMarkRead": false,
+  "updatePresence": false,
+  "listenTyping": false,
+  "logLevel": "error",
   "selfListen": false,
-  "online": false,
-  "logLevel": "silent"
-},
+  "selfListenEvent": true,
+  "autoMarkDelivery": false,
+  "autoReconnect": true
+  }
 "autoRefreshFbstate": true,
 "restartListenMqtt": {
   "enable": true,
